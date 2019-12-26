@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nest_project
+    restart: always
+    # environment:
+    #   -
+    volumes:
+      - nfsmount:/usr/src/app
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    tty: true
+    stdin_open: true
+    command: docker/docker-command.sh
+
+volumes:
+  nfsmount:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":${SOURCE_DIR}"
